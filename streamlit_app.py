@@ -17,13 +17,14 @@ if st.button("Search Recipes"):
 
     if response.status_code == 200:
         data = response.json()
+        print(data)
         recipes = data["results"]
 
         for recipe in recipes:
             st.subheader(recipe["title"])
             st.image(recipe["image"], caption="Recipe Image")
             st.write("Ingredients:", ", ".join(recipe["missedIngredients"]))
-            st.write("Instructions:", recipe["instructions"])
+            #st.write("Instructions:", recipe["instructions"])
             st.markdown("---")
     else:
         st.error("Error retrieving recipes. Please try again later.")
