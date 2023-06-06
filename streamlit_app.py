@@ -17,7 +17,7 @@ if st.button("Search Recipes"):
 
     if response.status_code == 200:
         data = response.json()
-        print(data)
+        st.write(data)
         recipes = data["results"]
 
         for recipe in recipes:
