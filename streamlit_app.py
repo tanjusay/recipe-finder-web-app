@@ -34,7 +34,7 @@ def display_recipe(recipe):
 def main():
     st.set_page_config(page_title="Recipe Finder")
 
-    ingredients = st.text_input("Enter the ingredients (comma-separated)", "apples, baking powder, cinnamon, egg")
+    ingredients = st.text_input("Enter the ingredients (comma-separated)")
     ingredients = [ingredient.strip() for ingredient in ingredients.split(",")]
 
     if ingredients:
