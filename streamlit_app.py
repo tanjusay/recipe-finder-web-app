@@ -38,16 +38,20 @@ def main():
     ingredients = [ingredient.strip() for ingredient in ingredients.split(",")]
 
     if ingredients:
-        recipes = get_recipes_by_ingredients(ingredients)
+        display_button = st.button("Get Recipes")
 
-        if recipes:
-            for recipe in recipes:
-                display_recipe(recipe)
-                st.markdown("---")
-        else:
-            st.error("No recipes found.")
-    else:
-        st.warning("Please enter some ingredients.")
+            if display_button:
+                recipe_data = get_recipes_by_ingredients(ingredients.split(","))
+                if recipe_data:
+                    for recipe in recipe_data:
+                        st.write(f"Title: {recipe['title']}")
+                        st.write(f"Image: {recipe['image']}")
+                        st.write(f"Missing Ingredients: {recipe['missedIngredients']}")
+                        st.write("---")
+                    else:
+                        st.write("No recipes found.")
+                else:
+                    st.warning("Please enter some ingredients.")
 
 if __name__ == "__main__":
     main()
