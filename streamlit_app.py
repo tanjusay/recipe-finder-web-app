@@ -3,7 +3,7 @@ import requests
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv()  # Load environment variables from .env file
 
 API_KEY = os.getenv("SPOONACULAR_API_KEY")
 
@@ -18,41 +18,20 @@ def get_recipes_by_ingredients(ingredients):
         return response.json()
     return None
 
+st.title("Find Recipes by Ingredients")
 
-def display_recipe(recipe):
-    st.title(recipe["title"])
-    st.image(recipe["image"], use_column_width=True)
-    st.subheader("Ingredients:")
-    for ingredient in recipe["usedIngredients"]:
-        st.write(f"- {ingredient['original']}")
-    st.subheader("Missing Ingredients:")
-    for ingredient in recipe["missedIngredients"]:
-        st.write(f"- {ingredient['original']}")
-    st.subheader("Instructions:")
-    st.write(recipe["instructions"])
+ingredients = st.text_input("Enter ingredients separated by commas")
 
-def main():
-    st.set_page_config(page_title="Recipe Finder")
+if ingredients:
+    display_button = st.button("Get Recipes")
 
-    ingredients = st.text_input("Enter the ingredients (comma-separated)")
-    ingredients = [ingredient.strip() for ingredient in ingredients.split(",")]
-
-    if ingredients:
-        display_button = st.button("Get Recipes")
-
-        if display_button:
-            ingredients = [ingredient.strip() for ingredient in ingredients.split(",")]
-
-            if recipes:
-                for recipe in recipes:
-                    st.write(f"Title: {recipe['title']}")
-                    st.write(f"Image: {recipe['image']}")
-                    st.write(f"Missing Ingredients: {recipe['missedIngredients']}")
-                    st.write("---")
-                else:
-                    st.write("No recipes found.")
-            else:
-                st.warning("Please enter some ingredients.")
-
-if __name__ == "__main__":
-    main()
+    if display_button:
+        recipe_data = get_recipes_by_ingredients(ingredients.split(","))
+        if recipe_data:
+            for recipe in recipe_data:
+                st.write(f"Title: {recipe['title']}")
+                st.image(recipe['image'])
+                st.write(f"Missing Ingredients: {', '.join([ingredient['name'] for ingredient in recipe['missedIngredients']])}")
+                st.write("---")
+        else:
+            st.write("No recipes found.")
